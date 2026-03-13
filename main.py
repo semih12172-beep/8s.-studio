@@ -19,6 +19,28 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ── System Prompt ─────────────────────────────────────────────────────────────
+
+SYSTEM_PROMPT = """You are a cross-era visual artist and film director — equally fluent in classical cinematic aesthetics and the technical logic of modern AI visual generation. Your role is to assist the human creative director in transforming vague inspirations into pixel-precise, production-ready creative instructions.
+
+IDENTITY & VOICE:
+- You think and communicate like a working director on set, not a writer or academic.
+- Your language is precise, sensory, and spatial. Every word earns its place.
+- You respond exclusively in English across all outputs.
+
+STATIC KEYFRAME GENERATION RULES:
+- FORBIDDEN words: "beautiful", "detailed", "amazing", "stunning", "perfect" — replace with specific sensory language.
+- Texture specificity: describe pore-level skin texture, fabric grain direction, the behavior of light on complex surfaces (subsurface scattering, diffuse bounce).
+- Camera specs are mandatory: always include format and lens (e.g. "Shot on ARRI Alexa 35, Zeiss Supreme 40mm T1.5, anamorphic").
+- Lighting logic is mandatory: always specify direction, quality, and color temperature (e.g. "Rembrandt lighting — single soft-box from upper left, 3200K tungsten fill, deep shadow on right jaw").
+- Micro-expression biology: describe with physiological precision (e.g. "pupils dilated, orbicularis oculi slightly contracted — the involuntary tension before tears").
+
+MOTION / VIDEO DIRECTOR RULES:
+- Emotional arc within shot: describe the expression onset, peak, and afterglow. No static emotions.
+- Background must breathe: every frame includes ambient disturbance (breeze through hair, blurred pedestrian trajectories, window light shifting with cloud cover).
+- Camera movement language only — no hard cuts in descriptions. Use: "Slow push-in tracking shot", "Subtle dolly advancing at 0.3m/s", "Handheld with organic sway following subject", "Pan locked to object flow".
+- Sound-picture sync: briefly note the audio texture that reinforces the image."""
+
 # ── Models ────────────────────────────────────────────────────────────────────
 
 class ScriptRequest(BaseModel):
@@ -41,10 +63,16 @@ class OptimizeShotsRequest(BaseModel):
     duration: str
     aspect_ratio: str
 
-class PromptsRequest(BaseModel):
+class KeyframeRequest(BaseModel):
     storyboard_json: str
     style: str
     aspect_ratio: str
+
+class MotionRequest(BaseModel):
+    storyboard_json: str
+    style: str
+    aspect_ratio: str
+    duration: str
 
 # ── Gemini Streaming Core ─────────────────────────────────────────────────────
 
@@ -65,6 +93,7 @@ async def stream_gemini(prompt: str, temperature: float = 0.85):
         return
 
     payload = {
+        "system_instruction": {"parts": [{"text": SYSTEM_PROMPT}]},
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {
             "temperature": temperature,
@@ -77,9 +106,8 @@ async def stream_gemini(prompt: str, temperature: float = 0.85):
             async with client.stream("POST", url, json=payload) as resp:
                 if resp.status_code != 200:
                     body = await resp.aread()
-                    yield f"data: {json.dumps({'error': f'Gemini API error {resp.status_code}: {body.decode()[:200]}'})}\n\n"
+                    yield f"data: {json.dumps({'error': f'Gemini API error {resp.status_code}: {body.decode()[:300]}'})}\n\n"
                     return
-
                 async for line in resp.aiter_lines():
                     if not line.startswith("data: "):
                         continue
@@ -93,7 +121,6 @@ async def stream_gemini(prompt: str, temperature: float = 0.85):
                         yield f"data: {json.dumps({'text': text})}\n\n"
                     except (KeyError, IndexError, json.JSONDecodeError):
                         continue
-
     except Exception as e:
         yield f"data: {json.dumps({'error': str(e)})}\n\n"
 
@@ -113,113 +140,120 @@ def sse_response(generator):
 async def serve_frontend():
     return FileResponse("index.html")
 
+@app.get("/library")
+async def serve_library():
+    return FileResponse("library.html")
+
 
 @app.post("/api/generate-script")
 async def generate_script(req: ScriptRequest):
-    revision_block = f"\n\n【修改要求】\n{req.revision}" if req.revision else ""
+    revision_block = f"\n\nREVISION DIRECTION:\n{req.revision}" if req.revision else ""
+    prompt = f"""Write a professional film script. Transform the following brief into a precise, cinematic screenplay.
 
-    prompt = f"""你是一位顶尖电影编剧，擅长将概念转化为精炼有力、具有画面感的剧本。
+PROJECT SPECS:
+Core Story: {req.story}
+Target Duration: {req.duration}
+Aspect Ratio: {req.aspect_ratio}
+Visual Style: {req.style}{revision_block}
 
-【项目规格】
-核心故事：{req.story}
-目标时长：{req.duration}
-画幅比例：{req.aspect_ratio}
-创作风格：{req.style}{revision_block}
-
-【输出要求】
-- 使用标准剧本格式：场景标题（INT./EXT. 场景 时间）、动作描述、对白
-- 每个场景描述必须有具体的视觉画面感（光线、色调、构图）
-- 控制在目标时长范围内
-- 语言精炼有力，避免平铺直叙
-- 直接输出剧本正文，无需任何前言或说明"""
+OUTPUT REQUIREMENTS:
+- Standard screenplay format: scene headings (INT./EXT. LOCATION — TIME), action lines, dialogue
+- Action lines must carry visual data: light direction, color temperature, composition, body language
+- Dialogue belongs to cinema, not theater — subtext over exposition
+- Scene count calibrated to target duration
+- Lean, precise language — zero filler
+- Output screenplay directly, no preamble"""
 
     return sse_response(stream_gemini(prompt))
 
 
 @app.post("/api/generate-storyboard")
 async def generate_storyboard(req: StoryboardRequest):
-    prompt = f"""你是一位专业电影分镜师。将以下剧本拆解为精确的工业级分镜表。
+    prompt = f"""Break down this screenplay into a precise industrial storyboard. Think like a DP marking up a script on location.
 
-【项目规格】
-目标时长：{req.duration}
-画幅比例：{req.aspect_ratio}
-创作风格：{req.style}
+PROJECT SPECS:
+Target Duration: {req.duration}
+Aspect Ratio: {req.aspect_ratio}
+Visual Style: {req.style}
 
-【剧本内容】
+SCREENPLAY:
 {req.script}
 
-【严格输出格式】
-直接输出JSON数组，禁止使用markdown代码块（不要```json）：
+Output ONLY a raw JSON array — no markdown fences, no explanation:
 [
   {{
     "shot_number": 1,
-    "shot_type": "大全景",
+    "shot_type": "Extreme Wide Shot",
     "duration": "4s",
-    "camera_movement": "固定",
-    "visual_description": "具体的画面描述，包括构图、光线方向、色调、主体动作",
-    "dialogue_sfx": "对白原文 或 音效描述，无则填—"
+    "camera_movement": "Static locked",
+    "visual_description": "Precise visual description — composition, light direction, color temp, subject action, depth of field",
+    "dialogue_sfx": "Dialogue line OR ambient sound — use — if none"
   }}
 ]
 
-景别（shot_type）可选：大特写 / 特写 / 近景 / 中景 / 全景 / 大全景
-运镜（camera_movement）可选：固定 / 推 / 拉 / 摇 / 移 / 跟 / 升 / 降
-时长格式：数字+s（如 3s、5s、8s）"""
+shot_type: Extreme Close-Up / Close-Up / Medium Close-Up / Medium Shot / Wide Shot / Extreme Wide Shot
+camera_movement: Static locked / Push-in / Pull-out / Pan / Tilt / Track / Follow / Crane up / Crane down / Handheld"""
 
     return sse_response(stream_gemini(prompt, temperature=0.7))
 
 
 @app.post("/api/optimize-shots")
 async def optimize_shots(req: OptimizeShotsRequest):
-    prompt = f"""你是一位顶尖电影分镜师。请优化以下分镜表，提升其电影感、节奏感和视觉叙事层次。
+    prompt = f"""You are a seasoned DP reviewing a rough storyboard. Elevate it — improve shot rhythm, visual specificity, and cinematic intelligence.
 
-【项目规格】
-风格：{req.style}
-时长：{req.duration}
-画幅：{req.aspect_ratio}
+Style: {req.style} | Duration: {req.duration} | Aspect Ratio: {req.aspect_ratio}
 
-【当前分镜】
+CURRENT STORYBOARD:
 {req.shots_json}
 
-【优化方向】
-1. 增强视觉描述的具体性和电影感（光线质感、色调、构图细节）
-2. 优化景别组合，使节奏更有变化
-3. 运镜更精准，与情绪/叙事匹配
-4. 时长分配更合理
+GOALS: richer visual descriptions, better shot variety, purposeful camera movement, tighter duration pacing.
 
-以完全相同的JSON结构输出优化结果，直接输出JSON数组，禁止markdown标记："""
+Output optimized storyboard as JSON array with IDENTICAL structure. No markdown fences:"""
 
     return sse_response(stream_gemini(prompt, temperature=0.75))
 
 
-@app.post("/api/generate-prompts")
-async def generate_prompts(req: PromptsRequest):
-    prompt = f"""You are an expert AI prompt engineer for cinematic image and video generation.
+@app.post("/api/generate-keyframes")
+async def generate_keyframes(req: KeyframeRequest):
+    prompt = f"""Generate professional AI image generation prompts for each storyboard shot. These are STATIC KEYFRAME prompts for image models (Midjourney, FLUX, Stable Diffusion, Ideogram).
 
-Project Context:
-- Visual Style: {req.style}
-- Aspect Ratio: {req.aspect_ratio}
+Style: {req.style} | Aspect Ratio: {req.aspect_ratio}
 
-Storyboard:
+STORYBOARD:
 {req.storyboard_json}
 
-Generate one professional English prompt per shot, optimized for AI generation models (Runway Gen-3, Kling AI, Sora, Midjourney).
+Rules per prompt:
+- Describe the single most cinematic frozen frame within the shot
+- Mandatory camera specs: format + lens (e.g. ARRI Alexa 35, Zeiss Supreme 40mm T1.5)
+- Mandatory lighting setup: direction + quality + color temperature
+- Sensory texture language — never "beautiful" or "detailed"
+- Include aspect ratio as technical parameter
+- 60–90 words each
 
-Output ONLY a JSON array (no markdown code blocks):
-[
-  {{
-    "shot_number": 1,
-    "prompt": "your detailed prompt here"
-  }}
-]
-
-Each prompt must include:
-- Shot type and framing (e.g. "extreme wide shot", "tight close-up")
-- Camera movement as descriptive text (e.g. "slow push-in", "static locked")
-- Specific lighting (direction, quality, color temperature)
-- Color palette and mood/atmosphere
-- Subject action and environment detail
-- Technical style reference (e.g. "shot on ARRI ALEXA, anamorphic lens")
-- Style keywords from: {req.style}
-- Length: 50-80 words per prompt"""
+Output ONLY raw JSON array, no fences:
+[{{"shot_number": 1, "prompt": "..."}}]"""
 
     return sse_response(stream_gemini(prompt, temperature=0.8))
+
+
+@app.post("/api/generate-motion")
+async def generate_motion(req: MotionRequest):
+    prompt = f"""Generate professional AI video generation prompts for each storyboard shot. These are MOTION prompts for video models (Runway Gen-3, Kling AI, Sora, Pika, Luma).
+
+Style: {req.style} | Aspect Ratio: {req.aspect_ratio} | Duration: {req.duration}
+
+STORYBOARD:
+{req.storyboard_json}
+
+Rules per prompt:
+- Describe movement: camera motion + subject action + environment behavior
+- Emotional arc: onset → peak → afterglow
+- Background must breathe: at least one ambient environmental motion
+- Precise cinematographic movement language (slow push-in, handheld drift, etc.)
+- Note implied sonic environment
+- 60–90 words each
+
+Output ONLY raw JSON array, no fences:
+[{{"shot_number": 1, "prompt": "..."}}]"""
+
+    return sse_response(stream_gemini(prompt, temperature=0.82))
