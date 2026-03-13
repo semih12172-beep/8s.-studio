@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1200">
+<title>8s. AI Studio — Project Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black: #000000;
+  --white: #ffffff;
+  --b1:    #0d0d0d;
+  --line:  #1e1e1e;
+  --line2: #2e2e2e;
+  --line3: #484848;
+  --dim:   #555555;
+  --dim2:  #888888;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  line-height: 1.85;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Header ── */
+header {
+  border-bottom: 1px solid var(--line2);
+  padding: 0 56px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: var(--black);
+  z-index: 200;
+}
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  text-decoration: none;
+  color: var(--white);
+}
+.logo-sub {
+  font-size: 9px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  color: var(--dim);
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: var(--dim);
+}
+.header-link {
+  color: var(--dim);
+  text-decoration: none;
+  letter-spacing: 0.25em;
+  font-size: 9px;
+  transition: color 0.12s;
+}
+.header-link:hover { color: var(--white); }
+.header-link.active { color: var(--white); }
+.hdr-dot { width: 5px; height: 5px; background: var(--dim); border-radius: 50%; }
+
+/* ── Page body ── */
+.page-wrap { max-width: 1440px; margin: 0 auto; }
+
+/* ── Library Header ── */
+.lib-header {
+  padding: 40px 56px 32px;
+  border-bottom: 1px solid var(--line2);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+.lib-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.lib-subtitle {
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  color: var(--dim);
+  margin-top: 6px;
+}
+.lib-count {
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  color: var(--dim);
+  white-space: nowrap;
+}
+
+/* ── Search ── */
+.search-bar {
+  padding: 18px 56px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.search-label {
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: var(--dim);
+  white-space: nowrap;
+}
+.search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--line2);
+  color: var(--white);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  padding: 6px 0;
+  outline: none;
+  caret-color: var(--white);
+  transition: border-color 0.15s;
+}
+.search-input:focus { border-color: var(--line3); }
+.search-input::placeholder { color: var(--dim); font-style: italic; font-weight: 300; }
+
+/* ── Empty state ── */
+.empty-state {
+  padding: 120px 56px;
+  text-align: center;
+}
+.empty-state .e-icon {
+  font-family: 'Syne', sans-serif;
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--line2);
+  letter-spacing: -0.04em;
+  margin-bottom: 24px;
+}
+.empty-state p {
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  color: var(--dim);
+  line-height: 2.5;
+}
+.empty-state a {
+  display: inline-block;
+  margin-top: 28px;
+  background: var(--white);
+  color: var(--black);
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  padding: 13px 22px;
+  text-decoration: none;
+  transition: opacity 0.12s;
+}
+.empty-state a:hover { opacity: 0.7; }
+
+/* ── Project list ── */
+.project-list { }
+
+.project-row {
+  border-bottom: 1px solid var(--line);
+  transition: background 0.1s;
+}
+.project-row:hover { background: var(--b1); }
+
+.project-header {
+  padding: 18px 56px;
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  align-items: center;
+  gap: 24px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.proj-id {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.proj-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.proj-story {
+  font-size: 13px;
+  color: var(--white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 700px;
+}
+.proj-tags {
+  display: flex;
+  gap: 14px;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  color: var(--dim);
+}
+
+.proj-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  color: var(--dim);
+}
+
+.expand-indicator {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--dim);
+  transition: transform 0.2s;
+}
+.expand-indicator.open { transform: rotate(180deg); }
+
+/* ── Project detail panel ── */
+.project-detail {
+  display: none;
+  border-top: 1px solid var(--line);
+  padding: 32px 56px 40px;
+  background: var(--b1);
+}
+.project-detail.open { display: block; }
+
+.detail-section {
+  margin-bottom: 28px;
+}
+.detail-label {
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: var(--dim);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.detail-content {
+  border: 1px solid var(--line2);
+  padding: 16px 20px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 12px;
+  line-height: 1.9;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+/* ── Storyboard table in library ── */
+.lib-table-shell { overflow-x: auto; border: 1px solid var(--line2); }
+.lib-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+  font-size: 11px;
+}
+.lib-table th {
+  text-align: left;
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  color: var(--dim);
+  text-transform: uppercase;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line2);
+  background: var(--black);
+  white-space: nowrap;
+}
+.lib-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  line-height: 1.7;
+  color: var(--dim2);
+}
+.lib-table tr:last-child td { border-bottom: none; }
+.lib-table .n-cell { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 10px; color: var(--dim); }
+
+/* ── Prompt cards in library ── */
+.lib-prompt-grid { display: grid; gap: 1px; background: var(--line2); border: 1px solid var(--line2); }
+.lib-prompt-card {
+  background: var(--b1);
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: 70px 1fr auto;
+  gap: 14px;
+  align-items: start;
+}
+.lib-p-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: var(--dim);
+}
+.lib-p-text { font-size: 11px; line-height: 1.85; color: var(--dim2); }
+
+.copy-btn-sm {
+  background: transparent;
+  border: 1px solid var(--line2);
+  color: var(--dim);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  padding: 5px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.12s;
+}
+.copy-btn-sm:hover { border-color: var(--line3); color: var(--white); }
+.copy-btn-sm.done  { border-color: var(--line); color: var(--dim); }
+
+.detail-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+.det-btn {
+  background: transparent;
+  border: 1px solid var(--line2);
+  color: var(--dim2);
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  padding: 11px 18px;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.det-btn:hover { border-color: var(--line3); color: var(--white); }
+.det-btn.danger { color: var(--dim); }
+.det-btn.danger:hover { border-color: #cc2200; color: #cc2200; }
+
+.prompt-tab-row {
+  display: flex;
+  border: 1px solid var(--line2);
+  overflow: hidden;
+  margin-bottom: 14px;
+  width: fit-content;
+}
+.ptab {
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--line2);
+  color: var(--dim);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  padding: 9px 16px;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.ptab:last-child { border-right: none; }
+.ptab.active { background: var(--white); color: var(--black); }
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid var(--line);
+  padding: 20px 56px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+}
+
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="/">8s. <span class="logo-sub">AI STUDIO</span></a>
+  <div class="header-right">
+    <a href="/" class="header-link">NEW PROJECT</a>
+    <span class="hdr-dot"></span>
+    <a href="/library" class="header-link active">PROJECT LIBRARY</a>
+    <span class="hdr-dot"></span>
+    <span id="hdr-time">—</span>
+  </div>
+</header>
+
+<div class="page-wrap">
+
+  <div class="lib-header">
+    <div>
+      <div class="lib-title">PROJECT LIBRARY</div>
+      <div class="lib-subtitle">ALL SAVED PROJECTS — READ ONLY</div>
+    </div>
+    <div class="lib-count" id="lib-count">— PROJECTS</div>
+  </div>
+
+  <div class="search-bar">
+    <span class="search-label">SEARCH</span>
+    <input class="search-input" id="search-input"
+      placeholder="Search by project ID, story, style..."
+      oninput="doSearch(this.value)">
+  </div>
+
+  <div id="project-list" class="project-list"></div>
+
+</div>
+
+<footer>
+  <span>8S. AI STUDIO — PROJECT LIBRARY</span>
+  <span id="ft-time">—</span>
+</footer>
+
+<script>
+
+let allProjects = [];
+
+/* ── Load projects ──────────────────────────────── */
+function loadProjects() {
+  allProjects = JSON.parse(localStorage.getItem('8s_projects') || '[]');
+  // newest first
+  allProjects = allProjects.slice().reverse();
+  renderList(allProjects);
+  document.getElementById('lib-count').textContent = `${allProjects.length} PROJECT${allProjects.length !== 1 ? 'S' : ''}`;
+}
+
+/* ── Render list ────────────────────────────────── */
+function renderList(projects) {
+  const el = document.getElementById('project-list');
+  if (!projects.length) {
+    el.innerHTML = `
+      <div class="empty-state">
+        <div class="e-icon">8s.</div>
+        <p>NO PROJECTS SAVED YET<br>COMPLETE A PROJECT PIPELINE AND CLICK "NEW PROJECT" TO SAVE</p>
+        <a href="/">START NEW PROJECT</a>
+      </div>`;
+    return;
+  }
+
+  el.innerHTML = '';
+  projects.forEach((p, idx) => {
+    const date = new Date(p.date);
+    const dateStr = date.toLocaleDateString('en-GB',{year:'numeric',month:'short',day:'2-digit'}).toUpperCase();
+    const timeStr = date.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false});
+    const storySnippet = (p.story||'').substring(0, 90) + ((p.story||'').length > 90 ? '...' : '');
+    const shotCount = (p.shots||[]).length;
+    const kfCount   = (p.keyframes||[]).length;
+    const mtCount   = (p.motionPrompts||[]).length;
+
+    const row = document.createElement('div');
+    row.className = 'project-row';
+    row.dataset.idx = idx;
+    row.innerHTML = `
+      <div class="project-header" onclick="toggleDetail(${idx})">
+        <div class="proj-id">${p.id}</div>
+        <div class="proj-meta">
+          <div class="proj-story">${storySnippet}</div>
+          <div class="proj-tags">
+            <span>${p.duration||'—'}</span>
+            <span>${p.aspect_ratio||'—'}</span>
+            <span>${p.style ? p.style.substring(0,40) : '—'}</span>
+            <span>${shotCount} SHOTS</span>
+            ${kfCount ? `<span>${kfCount} KEYFRAMES</span>` : ''}
+            ${mtCount ? `<span>${mtCount} MOTION</span>` : ''}
+          </div>
+        </div>
+        <div class="proj-right">
+          <span>${dateStr} ${timeStr}</span>
+          <span class="expand-indicator" id="exp-${idx}">▼</span>
+        </div>
+      </div>
+      <div class="project-detail" id="detail-${idx}">
+        ${buildDetail(p, idx)}
+      </div>`;
+    el.appendChild(row);
+  });
+}
+
+/* ── Build detail panel ─────────────────────────── */
+function buildDetail(p, idx) {
+  let html = '';
+
+  // Story
+  html += `<div class="detail-section">
+    <div class="detail-label">Core Story</div>
+    <div class="detail-content" style="max-height:120px">${escHtml(p.story||'—')}</div>
+  </div>`;
+
+  // Script
+  if (p.script) {
+    html += `<div class="detail-section">
+      <div class="detail-label">Script</div>
+      <div class="detail-content">${escHtml(p.script)}</div>
+    </div>`;
+  }
+
+  // Storyboard
+  if (p.shots && p.shots.length) {
+    html += `<div class="detail-section">
+      <div class="detail-label">Storyboard — ${p.shots.length} Shots</div>
+      <div class="lib-table-shell">
+        <table class="lib-table">
+          <thead><tr>
+            <th>#</th><th>Shot Type</th><th>Duration</th>
+            <th>Camera</th><th>Visual Description</th><th>Dialogue / SFX</th>
+          </tr></thead>
+          <tbody>
+            ${p.shots.map(s => `<tr>
+              <td class="n-cell">${String(s.shot_number).padStart(2,'0')}</td>
+              <td>${escHtml(s.shot_type||'')}</td>
+              <td>${escHtml(s.duration||'')}</td>
+              <td>${escHtml(s.camera_movement||'')}</td>
+              <td style="max-width:320px">${escHtml(s.visual_description||'')}</td>
+              <td style="max-width:200px">${escHtml(s.dialogue_sfx||'—')}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+  }
+
+  // Prompts tabs
+  const hasKF = p.keyframes && p.keyframes.length;
+  const hasMT = p.motionPrompts && p.motionPrompts.length;
+
+  if (hasKF || hasMT) {
+    html += `<div class="detail-section" id="prompts-section-${idx}">
+      <div class="detail-label">Prompts</div>
+      <div class="prompt-tab-row">
+        ${hasKF ? `<button class="ptab active" id="tab-kf-${idx}" onclick="switchTab(${idx},'kf')">KEYFRAME (${p.keyframes.length})</button>` : ''}
+        ${hasMT ? `<button class="ptab ${!hasKF?'active':''}" id="tab-mt-${idx}" onclick="switchTab(${idx},'mt')">MOTION (${p.motionPrompts.length})</button>` : ''}
+      </div>
+      ${hasKF ? `<div id="pane-kf-${idx}" class="lib-prompt-grid">
+        ${p.keyframes.map((kf,i) => `<div class="lib-prompt-card">
+          <div class="lib-p-num">SHOT ${String(kf.shot_number||i+1).padStart(2,'0')}</div>
+          <div class="lib-p-text">${escHtml(kf.prompt||'')}</div>
+          <button class="copy-btn-sm" onclick="libCopy(${idx},'kf',${i},this)">COPY</button>
+        </div>`).join('')}
+      </div>` : ''}
+      ${hasMT ? `<div id="pane-mt-${idx}" style="display:${!hasKF?'grid':'none'}" class="lib-prompt-grid">
+        ${p.motionPrompts.map((mt,i) => `<div class="lib-prompt-card">
+          <div class="lib-p-num">SHOT ${String(mt.shot_number||i+1).padStart(2,'0')}</div>
+          <div class="lib-p-text">${escHtml(mt.prompt||'')}</div>
+          <button class="copy-btn-sm" onclick="libCopy(${idx},'mt',${i},this)">COPY</button>
+        </div>`).join('')}
+      </div>` : ''}
+    </div>`;
+  }
+
+  // Actions
+  html += `<div class="detail-actions">
+    <button class="det-btn" onclick="libCopyAll(${idx},'kf')">COPY ALL KEYFRAME PROMPTS</button>
+    <button class="det-btn" onclick="libCopyAll(${idx},'mt')">COPY ALL MOTION PROMPTS</button>
+    <button class="det-btn danger" onclick="deleteProject(${idx})">DELETE PROJECT</button>
+  </div>`;
+
+  return html;
+}
+
+/* ── Tab switcher ───────────────────────────────── */
+function switchTab(idx, pane) {
+  const p = allProjects[idx];
+  const hasKF = p.keyframes && p.keyframes.length;
+  const hasMT = p.motionPrompts && p.motionPrompts.length;
+
+  if (hasKF) {
+    document.getElementById(`tab-kf-${idx}`).classList.toggle('active', pane === 'kf');
+    document.getElementById(`pane-kf-${idx}`).style.display = pane === 'kf' ? 'grid' : 'none';
+  }
+  if (hasMT) {
+    document.getElementById(`tab-mt-${idx}`).classList.toggle('active', pane === 'mt');
+    document.getElementById(`pane-mt-${idx}`).style.display = pane === 'mt' ? 'grid' : 'none';
+  }
+}
+
+/* ── Toggle detail ──────────────────────────────── */
+function toggleDetail(idx) {
+  const detail = document.getElementById(`detail-${idx}`);
+  const exp    = document.getElementById(`exp-${idx}`);
+  const isOpen = detail.classList.contains('open');
+  detail.classList.toggle('open', !isOpen);
+  exp.classList.toggle('open', !isOpen);
+}
+
+/* ── Copy helpers ───────────────────────────────── */
+async function libCopy(projIdx, type, promptIdx, btn) {
+  const p = allProjects[projIdx];
+  const arr = type === 'kf' ? (p.keyframes||[]) : (p.motionPrompts||[]);
+  await navigator.clipboard.writeText(arr[promptIdx]?.prompt||'');
+  btn.textContent = 'COPIED'; btn.classList.add('done');
+  setTimeout(() => { btn.textContent = 'COPY'; btn.classList.remove('done'); }, 1400);
+}
+
+async function libCopyAll(projIdx, type) {
+  const p = allProjects[projIdx];
+  const arr = type === 'kf' ? (p.keyframes||[]) : (p.motionPrompts||[]);
+  if (!arr.length) return;
+  const txt = arr.map((x,i) => `SHOT ${String(x.shot_number||i+1).padStart(2,'0')}:\n${x.prompt}`).join('\n\n---\n\n');
+  await navigator.clipboard.writeText(txt);
+}
+
+/* ── Delete ─────────────────────────────────────── */
+function deleteProject(idx) {
+  if (!confirm(`Delete project ${allProjects[idx].id}? This cannot be undone.`)) return;
+  // Find in original (allProjects is reversed)
+  const allOrig = JSON.parse(localStorage.getItem('8s_projects') || '[]');
+  const targetId = allProjects[idx].id;
+  const filtered = allOrig.filter(p => p.id !== targetId);
+  localStorage.setItem('8s_projects', JSON.stringify(filtered));
+  loadProjects();
+}
+
+/* ── Search ─────────────────────────────────────── */
+function doSearch(q) {
+  if (!q.trim()) { renderList(allProjects); return; }
+  const lq = q.toLowerCase();
+  const filtered = allProjects.filter(p =>
+    (p.id||'').toLowerCase().includes(lq) ||
+    (p.story||'').toLowerCase().includes(lq) ||
+    (p.style||'').toLowerCase().includes(lq) ||
+    (p.script||'').toLowerCase().includes(lq)
+  );
+  renderList(filtered);
+}
+
+/* ── Util ───────────────────────────────────────── */
+function escHtml(s) {
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+/* ── Clock ──────────────────────────────────────── */
+function tick() {
+  const t = new Date().toLocaleString('en-GB',{hour12:false,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  document.getElementById('hdr-time').textContent = t;
+  document.getElementById('ft-time').textContent  = t;
+}
+tick(); setInterval(tick, 1000);
+
+loadProjects();
+
+</script>
+</body>
+</html>
