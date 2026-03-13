@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=1200">
@@ -15,16 +15,16 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --black:   #000000;
-  --white:   #ffffff;
-  --b1:      #111111;
-  --b2:      #1a1a1a;
-  --line:    #222222;
-  --line2:   #333333;
-  --line3:   #4a4a4a;
-  --dim:     #555555;
-  --dim2:    #888888;
-  --red:     #cc2200;
+  --black: #000000;
+  --white: #ffffff;
+  --b1:    #0d0d0d;
+  --b2:    #1a1a1a;
+  --line:  #1e1e1e;
+  --line2: #2e2e2e;
+  --line3: #484848;
+  --dim:   #555555;
+  --dim2:  #888888;
+  --red:   #cc2200;
 }
 
 html { scroll-behavior: smooth; }
@@ -55,22 +55,19 @@ body {
   text-align: center;
   padding: 48px;
 }
-
 .mobile-wall .mw-logo {
   font-family: 'Syne', sans-serif;
-  font-size: 36px;
+  font-size: 40px;
   font-weight: 800;
   letter-spacing: -0.04em;
 }
-
 .mobile-wall p {
   font-size: 10px;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.28em;
   color: var(--dim);
-  line-height: 2.4;
+  line-height: 2.6;
 }
-
-@media (max-width: 920px) { .mobile-wall { display: flex; } }
+@media (max-width: 960px) { .mobile-wall { display: flex; } }
 
 /* ═══════════════════════════════════════════
    HEADER
@@ -87,7 +84,6 @@ header {
   background: var(--black);
   z-index: 200;
 }
-
 .logo {
   font-family: 'Syne', sans-serif;
   font-size: 20px;
@@ -96,8 +92,9 @@ header {
   display: flex;
   align-items: baseline;
   gap: 14px;
+  text-decoration: none;
+  color: var(--white);
 }
-
 .logo-sub {
   font-size: 9px;
   font-family: 'IBM Plex Mono', monospace;
@@ -105,39 +102,32 @@ header {
   letter-spacing: 0.3em;
   color: var(--dim);
 }
-
 .header-right {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 28px;
   font-size: 9px;
   letter-spacing: 0.25em;
   color: var(--dim);
 }
-
-.header-dot {
-  width: 5px;
-  height: 5px;
-  background: var(--dim);
-  border-radius: 50%;
-  display: inline-block;
+.header-link {
+  color: var(--dim);
+  text-decoration: none;
+  letter-spacing: 0.25em;
+  font-size: 9px;
+  transition: color 0.12s;
 }
+.header-link:hover { color: var(--white); }
+.hdr-dot { width: 5px; height: 5px; background: var(--dim); border-radius: 50%; }
 
 /* ═══════════════════════════════════════════
-   MAIN & STEPS
+   STEPS
 ═══════════════════════════════════════════ */
-main { max-width: 1440px; margin: 0 auto; }
-
 .step {
   border-bottom: 1px solid var(--line);
-  transition: opacity 0.5s cubic-bezier(.4,0,.2,1);
+  transition: opacity 0.45s cubic-bezier(.4,0,.2,1);
 }
-
-.step.locked {
-  opacity: 0.18;
-  pointer-events: none;
-  user-select: none;
-}
+.step.locked { opacity: 0.15; pointer-events: none; user-select: none; }
 
 .step-header {
   padding: 20px 56px;
@@ -145,9 +135,7 @@ main { max-width: 1440px; margin: 0 auto; }
   display: grid;
   grid-template-columns: 72px 1fr auto;
   align-items: center;
-  gap: 8px;
 }
-
 .step-num {
   font-family: 'Syne', sans-serif;
   font-size: 10px;
@@ -155,22 +143,18 @@ main { max-width: 1440px; margin: 0 auto; }
   letter-spacing: 0.35em;
   color: var(--dim);
 }
-
 .step-title {
   font-family: 'Syne', sans-serif;
   font-size: 17px;
   font-weight: 800;
   letter-spacing: -0.02em;
 }
-
 .step-status {
   font-size: 9px;
   letter-spacing: 0.3em;
   color: var(--dim);
-  text-transform: uppercase;
 }
-
-.step-status.active { color: var(--white); }
+.step-status.active   { color: var(--white); }
 .step-status.complete { color: var(--dim2); }
 
 .step-body { padding: 36px 56px 44px; }
@@ -186,7 +170,6 @@ main { max-width: 1440px; margin: 0 auto; }
   text-transform: uppercase;
   margin-bottom: 10px;
 }
-
 textarea, input[type="text"] {
   width: 100%;
   background: transparent;
@@ -201,13 +184,11 @@ textarea, input[type="text"] {
   transition: border-color 0.15s;
   caret-color: var(--white);
 }
-
 textarea::placeholder, input::placeholder {
   color: var(--dim);
   font-style: italic;
   font-weight: 300;
 }
-
 textarea:focus, input:focus { border-color: var(--line3); }
 
 /* ═══════════════════════════════════════════
@@ -219,13 +200,7 @@ textarea:focus, input:focus { border-color: var(--line3); }
   gap: 20px;
   margin-top: 20px;
 }
-
-.option-group {
-  display: flex;
-  border: 1px solid var(--line2);
-  overflow: hidden;
-}
-
+.option-group { display: flex; border: 1px solid var(--line2); overflow: hidden; }
 .opt-btn {
   flex: 1;
   background: transparent;
@@ -240,11 +215,9 @@ textarea:focus, input:focus { border-color: var(--line3); }
   transition: all 0.12s;
   white-space: nowrap;
 }
-
 .opt-btn:last-child { border-right: none; }
 .opt-btn:hover { color: var(--white); background: var(--b1); }
 .opt-btn.selected { background: var(--white); color: var(--black); }
-
 .style-row { margin-top: 20px; }
 
 /* ═══════════════════════════════════════════
@@ -257,7 +230,6 @@ textarea:focus, input:focus { border-color: var(--line3); }
   flex-wrap: wrap;
   align-items: center;
 }
-
 .btn {
   background: var(--white);
   color: var(--black);
@@ -272,10 +244,8 @@ textarea:focus, input:focus { border-color: var(--line3); }
   transition: opacity 0.12s;
   white-space: nowrap;
 }
-
 .btn:hover { opacity: 0.72; }
-.btn:disabled { opacity: 0.25; cursor: not-allowed; }
-
+.btn:disabled { opacity: 0.22; cursor: not-allowed; }
 .btn-ghost {
   background: transparent;
   color: var(--dim2);
@@ -287,7 +257,7 @@ textarea:focus, input:focus { border-color: var(--line3); }
    STEP 2 — SCRIPT
 ═══════════════════════════════════════════ */
 #script-display {
-  min-height: 300px;
+  min-height: 280px;
   max-height: 520px;
   overflow-y: auto;
   border: 1px solid var(--line2);
@@ -299,9 +269,7 @@ textarea:focus, input:focus { border-color: var(--line3); }
   font-size: 13px;
   transition: border-color 0.15s;
 }
-
 #script-display:focus { border-color: var(--line3); }
-
 #script-display:empty::before {
   content: attr(data-placeholder);
   color: var(--dim);
@@ -309,12 +277,10 @@ textarea:focus, input:focus { border-color: var(--line3); }
   font-weight: 300;
   pointer-events: none;
 }
-
 #script-display.streaming::after {
   content: '▊';
   animation: blink 0.65s step-end infinite;
 }
-
 @keyframes blink { 50% { opacity: 0; } }
 
 .revision-wrap {
@@ -328,28 +294,29 @@ textarea:focus, input:focus { border-color: var(--line3); }
 .revision-wrap textarea { min-height: 80px; margin-bottom: 12px; }
 
 /* ═══════════════════════════════════════════
-   STEP 3 — STORYBOARD
+   STEP 3/4 SHARED
 ═══════════════════════════════════════════ */
 .loading-msg {
   display: none;
-  padding: 48px 0;
+  padding: 52px 0;
   text-align: center;
   font-size: 9px;
   letter-spacing: 0.35em;
   color: var(--dim);
 }
 .loading-msg span { animation: pulse 1.6s ease-in-out infinite; }
-@keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:1} }
+@keyframes pulse { 0%,100%{opacity:.28} 50%{opacity:1} }
 
+/* ═══════════════════════════════════════════
+   STORYBOARD TABLE
+═══════════════════════════════════════════ */
 .table-shell { overflow-x: auto; border: 1px solid var(--line2); }
-
 .sb-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 960px;
+  min-width: 1000px;
   font-size: 12px;
 }
-
 .sb-table th {
   text-align: left;
   font-size: 9px;
@@ -361,38 +328,44 @@ textarea:focus, input:focus { border-color: var(--line3); }
   background: var(--b1);
   white-space: nowrap;
 }
-
 .sb-table td {
   padding: 12px 14px;
   border-bottom: 1px solid var(--line);
   vertical-align: top;
   line-height: 1.75;
   outline: none;
-  transition: background 0.12s;
+  transition: background 0.1s;
 }
-
-.sb-table td:focus { background: #0b0b0b; box-shadow: inset 0 0 0 1px var(--line2); }
+.sb-table td:focus { background: #0a0a0a; box-shadow: inset 0 0 0 1px var(--line2); }
 .sb-table tr:last-child td { border-bottom: none; }
-.sb-table .n-cell { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 10px; color: var(--dim); white-space: nowrap; }
-.sb-table .vis-cell { max-width: 320px; }
+.sb-table .n-cell { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 10px; color: var(--dim); }
+.sb-table .vis-cell { max-width: 340px; }
 .sb-table .dial-cell { max-width: 200px; color: var(--dim2); }
 
 /* ═══════════════════════════════════════════
-   STEP 4 — PROMPTS
+   PROMPT CARDS (Step 3 Keyframes + Step 4 Motion)
 ═══════════════════════════════════════════ */
-.prompt-grid { display: grid; gap: 1px; background: var(--line); }
+.prompt-section-title {
+  font-size: 9px;
+  letter-spacing: 0.35em;
+  color: var(--dim);
+  text-transform: uppercase;
+  padding: 28px 0 14px;
+  border-top: 1px solid var(--line2);
+  margin-top: 32px;
+}
 
+.prompt-grid { display: grid; gap: 1px; background: var(--line2); border: 1px solid var(--line2); }
 .prompt-card {
   background: var(--black);
   padding: 18px 22px;
   display: grid;
-  grid-template-columns: 64px 1fr auto;
-  gap: 14px;
+  grid-template-columns: 80px 1fr auto;
+  gap: 16px;
   align-items: start;
-  transition: background 0.12s;
+  transition: background 0.1s;
 }
 .prompt-card:hover { background: var(--b1); }
-
 .p-num {
   font-family: 'Syne', sans-serif;
   font-size: 9px;
@@ -401,8 +374,7 @@ textarea:focus, input:focus { border-color: var(--line3); }
   color: var(--dim);
   padding-top: 2px;
 }
-
-.p-text { font-size: 12px; line-height: 1.9; color: var(--white); }
+.p-text { font-size: 12px; line-height: 1.9; }
 
 .copy-btn {
   background: transparent;
@@ -420,7 +392,7 @@ textarea:focus, input:focus { border-color: var(--line3); }
 .copy-btn.done { border-color: var(--line); color: var(--dim); }
 
 /* ═══════════════════════════════════════════
-   STATUS BAR
+   STATUS + ERROR
 ═══════════════════════════════════════════ */
 .status-bar {
   font-size: 9px;
@@ -431,9 +403,6 @@ textarea:focus, input:focus { border-color: var(--line3); }
 }
 .status-bar.on { display: block; }
 
-/* ═══════════════════════════════════════════
-   ERROR
-═══════════════════════════════════════════ */
 .err-box {
   border: 1px solid var(--red);
   color: var(--red);
@@ -443,6 +412,28 @@ textarea:focus, input:focus { border-color: var(--line3); }
   display: none;
 }
 .err-box.on { display: block; }
+
+/* ═══════════════════════════════════════════
+   SAVE TOAST
+═══════════════════════════════════════════ */
+#save-toast {
+  position: fixed;
+  bottom: 32px;
+  right: 48px;
+  background: var(--white);
+  color: var(--black);
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  padding: 13px 22px;
+  z-index: 500;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.25s, transform 0.25s;
+  pointer-events: none;
+}
+#save-toast.show { opacity: 1; transform: translateY(0); }
 
 /* ═══════════════════════════════════════════
    FOOTER
@@ -459,28 +450,63 @@ footer {
 }
 
 /* ═══════════════════════════════════════════
-   PRINT / PDF
+   PRINT / PDF  — key: hide UI chrome, show content
 ═══════════════════════════════════════════ */
 @media print {
-  .no-print, header, footer, .btn-row, .revision-wrap, .copy-btn { display: none !important; }
-  body { background: #fff !important; color: #000 !important; font-size: 11px; }
-  .step { opacity: 1 !important; pointer-events: auto !important; border-color: #ddd !important; }
-  .step-header { border-color: #ddd !important; padding: 12px 32px; }
-  .step-body { padding: 20px 32px; }
-  .step-title { color: #000; font-size: 15px; }
-  .step-num { color: #999; }
+  /* hide everything non-content */
+  .mobile-wall,
+  header,
+  footer,
+  .btn-row,
+  .revision-wrap,
+  .copy-btn,
+  .loading-msg,
+  .status-bar,
+  .err-box,
+  #save-toast { display: none !important; }
+
+  html, body { background: #fff !important; color: #000 !important; }
+
+  /* force ALL steps visible regardless of locked state */
+  .step {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    border-color: #ddd !important;
+    page-break-inside: avoid;
+  }
+
+  .step-header { padding: 12px 32px; border-color: #ddd !important; }
+  .step-body   { padding: 18px 32px 28px; }
+  .step-title  { font-size: 15px; color: #000; }
+  .step-num    { color: #999; }
+  .step-status { color: #999 !important; }
   .field-label { color: #666; }
-  #script-display { border-color: #ddd; max-height: none; color: #000; padding: 16px; }
-  .sb-table th { background: #f5f5f5; color: #555; border-color: #ddd; }
-  .sb-table td { border-color: #eee; color: #000; }
-  .sb-table .n-cell { color: #999; }
-  .sb-table .dial-cell { color: #555; }
-  .prompt-grid { background: #eee; }
-  .prompt-card { background: #fff; padding: 14px 18px; }
-  .p-num { color: #999; }
-  .p-text { color: #000; }
-  .loading-msg, .status-bar { display: none !important; }
-  .table-shell { border-color: #ddd; overflow: visible; }
+
+  #script-display {
+    border-color: #ddd !important;
+    max-height: none !important;
+    color: #000 !important;
+    padding: 16px;
+    overflow: visible !important;
+  }
+
+  .table-shell { border-color: #ddd !important; overflow: visible !important; }
+  .sb-table th { background: #f5f5f5 !important; color: #666 !important; border-color: #ddd !important; }
+  .sb-table td { border-color: #eee !important; color: #000 !important; }
+  .sb-table .n-cell  { color: #999 !important; }
+  .sb-table .dial-cell { color: #555 !important; }
+
+  .prompt-grid   { background: #eee !important; }
+  .prompt-card   { background: #fff !important; padding: 12px 18px; }
+  .p-num  { color: #999 !important; }
+  .p-text { color: #000 !important; }
+  .prompt-section-title { color: #666 !important; border-color: #ddd !important; }
+
+  .option-group, .opt-btn.selected {
+    border-color: #ddd !important;
+    background: #f5f5f5 !important;
+    color: #000 !important;
+  }
 }
 
 </style>
@@ -495,12 +521,12 @@ footer {
 
 <!-- ── Header ─────────────────────────────── -->
 <header>
-  <div class="logo">
-    8s. <span class="logo-sub">AI STUDIO</span>
-  </div>
+  <a class="logo" href="/">8s. <span class="logo-sub">AI STUDIO</span></a>
   <div class="header-right">
     <span>FILM SCRIPT & STORYBOARD PIPELINE</span>
-    <span class="header-dot"></span>
+    <span class="hdr-dot"></span>
+    <a href="/library" class="header-link">PROJECT LIBRARY</a>
+    <span class="hdr-dot"></span>
     <span id="hdr-time">—</span>
   </div>
 </header>
@@ -518,13 +544,13 @@ footer {
   </div>
   <div class="step-body">
 
-    <label class="field-label">核心故事描述 / Core Story</label>
+    <label class="field-label">Core Story</label>
     <textarea id="inp-story" rows="5"
-      placeholder="输入你的故事灵感、场景、角色、冲突..."></textarea>
+      placeholder="Describe your story concept — characters, setting, conflict, tone..."></textarea>
 
     <div class="options-row">
       <div>
-        <label class="field-label">时长 / Duration</label>
+        <label class="field-label">Duration</label>
         <div class="option-group" id="dur-grp">
           <button class="opt-btn selected" data-v="&lt;1min"  onclick="pick('dur',this)">&lt;1 MIN</button>
           <button class="opt-btn"          data-v="1-3min"   onclick="pick('dur',this)">1–3 MIN</button>
@@ -533,7 +559,7 @@ footer {
         </div>
       </div>
       <div>
-        <label class="field-label">画幅 / Aspect Ratio</label>
+        <label class="field-label">Aspect Ratio</label>
         <div class="option-group" id="rat-grp">
           <button class="opt-btn"          data-v="1:1"  onclick="pick('rat',this)">1:1</button>
           <button class="opt-btn"          data-v="9:16" onclick="pick('rat',this)">9:16</button>
@@ -544,15 +570,14 @@ footer {
     </div>
 
     <div class="style-row">
-      <label class="field-label">风格定义 / Style Definition</label>
+      <label class="field-label">Style Definition</label>
       <input type="text" id="inp-style"
         placeholder="e.g. Youth style, high symmetry, neon-noir, handheld kinetic, Terrence Malick...">
     </div>
 
     <div class="btn-row no-print">
-      <button class="btn" id="btn-gen-script" onclick="doGenScript()">GENERATE SCRIPT</button>
+      <button class="btn" onclick="doGenScript()">GENERATE SCRIPT</button>
     </div>
-
     <div class="err-box" id="err1"></div>
   </div>
 </section>
@@ -568,33 +593,32 @@ footer {
   </div>
   <div class="step-body">
 
-    <label class="field-label">生成剧本 / Generated Script</label>
+    <label class="field-label">Generated Script</label>
     <div id="script-display"
          contenteditable="true"
          spellcheck="false"
-         data-placeholder="剧本将在此处流式生成..."></div>
+         data-placeholder="Script will stream here..."></div>
 
     <div class="status-bar" id="sb2"></div>
 
     <div class="revision-wrap" id="rev-wrap">
-      <label class="field-label">修改方向 / Revision Direction</label>
+      <label class="field-label">Revision Direction</label>
       <textarea id="rev-input" rows="3"
-        placeholder="描述修改方向... (e.g. 增加悬念，结尾改为开放式，减少对白增加视觉动作)"></textarea>
+        placeholder="Describe revision direction... (e.g. add tension in act 2, open ending, less dialogue more visual action)"></textarea>
       <button class="btn btn-ghost" onclick="doApplyRevision()">APPLY REVISION</button>
     </div>
 
     <div class="btn-row no-print">
-      <button class="btn btn-ghost" id="btn-rev"    onclick="toggleRevision()">修改意见</button>
-      <button class="btn btn-ghost" id="btn-regen"  onclick="doRegenScript()" disabled>重新生成</button>
-      <button class="btn"           id="btn-lock"   onclick="doLockScript()"  disabled>锁定剧本并分镜 →</button>
+      <button class="btn btn-ghost" onclick="toggleRevision()">REVISION NOTES</button>
+      <button class="btn btn-ghost" id="btn-regen" onclick="doRegenScript()" disabled>REGENERATE</button>
+      <button class="btn"           id="btn-lock"  onclick="doLockScript()"  disabled>LOCK SCRIPT &amp; BREAK DOWN →</button>
     </div>
-
     <div class="err-box" id="err2"></div>
   </div>
 </section>
 
 <!-- ════════════════════════════════════════
-     STEP 03 — STORYBOARD BREAKDOWN
+     STEP 03 — STORYBOARD + KEYFRAME PROMPTS
 ════════════════════════════════════════ -->
 <section class="step locked" id="step3">
   <div class="step-header">
@@ -604,7 +628,7 @@ footer {
   </div>
   <div class="step-body">
 
-    <div class="loading-msg" id="ld3"><span>— ANALYZING SCRIPT —</span></div>
+    <div class="loading-msg" id="ld3"><span>— BREAKING DOWN SCRIPT —</span></div>
 
     <div id="sb-wrap" style="display:none">
       <div class="table-shell">
@@ -612,11 +636,11 @@ footer {
           <thead>
             <tr>
               <th>#</th>
-              <th>景别</th>
-              <th>时长</th>
-              <th>运镜</th>
-              <th>视觉描述</th>
-              <th>对白 / 音效</th>
+              <th>Shot Type</th>
+              <th>Duration</th>
+              <th>Camera</th>
+              <th>Visual Description</th>
+              <th>Dialogue / SFX</th>
             </tr>
           </thead>
           <tbody id="sb-body"></tbody>
@@ -625,9 +649,18 @@ footer {
 
       <div class="status-bar" id="sb3"></div>
 
+      <!-- Keyframe prompts section -->
+      <div id="kf-section" style="display:none">
+        <div class="prompt-section-title">KEYFRAME PROMPTS — STATIC IMAGE GENERATION</div>
+        <div class="loading-msg" id="ld-kf"><span>— ENGINEERING KEYFRAME PROMPTS —</span></div>
+        <div class="prompt-grid" id="kf-grid"></div>
+        <div class="status-bar" id="sb-kf"></div>
+      </div>
+
       <div class="btn-row no-print">
-        <button class="btn btn-ghost" onclick="doOptimize()">优化镜头语言</button>
-        <button class="btn" id="btn-prompts" onclick="doGenPrompts()">生成视觉提示词 →</button>
+        <button class="btn btn-ghost" onclick="doOptimize()">OPTIMIZE SHOTS</button>
+        <button class="btn btn-ghost" id="btn-kf" onclick="doGenKeyframes()">GENERATE KEYFRAME PROMPTS</button>
+        <button class="btn" id="btn-motion-go" onclick="doGoMotion()" style="display:none">GENERATE MOTION PROMPTS →</button>
       </div>
     </div>
 
@@ -636,27 +669,29 @@ footer {
 </section>
 
 <!-- ════════════════════════════════════════
-     STEP 04 — PROMPT LIBRARY
+     STEP 04 — MOTION PROMPTS
 ════════════════════════════════════════ -->
 <section class="step locked" id="step4">
   <div class="step-header">
     <span class="step-num">04</span>
-    <span class="step-title">PROMPT LIBRARY</span>
+    <span class="step-title">MOTION PROMPTS</span>
     <span class="step-status" id="st4">PENDING</span>
   </div>
   <div class="step-body">
 
-    <div class="loading-msg" id="ld4"><span>— ENGINEERING PROMPTS —</span></div>
+    <div class="loading-msg" id="ld4"><span>— DIRECTING MOTION SEQUENCES —</span></div>
 
-    <div id="pm-wrap" style="display:none">
-      <div class="prompt-grid" id="pm-grid"></div>
+    <div id="mt-wrap" style="display:none">
+      <div class="prompt-section-title">MOTION PROMPTS — VIDEO GENERATION (RUNWAY / KLING / SORA / LUMA)</div>
+      <div class="prompt-grid" id="mt-grid"></div>
 
       <div class="status-bar" id="sb4"></div>
 
       <div class="btn-row no-print" style="margin-top:36px">
-        <button class="btn"       onclick="doPDF()">导出 PDF</button>
-        <button class="btn btn-ghost" onclick="doCopyAll()">复制全部提示词</button>
-        <button class="btn btn-ghost" onclick="doNewProject()">↺ 新项目</button>
+        <button class="btn"       onclick="doPDF()">EXPORT PDF</button>
+        <button class="btn btn-ghost" onclick="doCopyAllMotion()">COPY ALL MOTION PROMPTS</button>
+        <button class="btn btn-ghost" onclick="doNewProject()">↺ NEW PROJECT</button>
+        <a href="/library" class="btn btn-ghost" style="text-decoration:none">PROJECT LIBRARY</a>
       </div>
     </div>
 
@@ -672,6 +707,8 @@ footer {
   <span id="ft-time">—</span>
 </footer>
 
+<div id="save-toast">PROJECT SAVED</div>
+
 <!-- ══════════════════════════════════════════════════
      JAVASCRIPT
 ══════════════════════════════════════════════════ -->
@@ -679,13 +716,9 @@ footer {
 
 /* ── State ──────────────────────────────────────── */
 const S = {
-  dur:     '<1min',
-  rat:     '16:9',
-  story:   '',
-  style:   '',
-  script:  '',
-  shots:   [],
-  prompts: []
+  dur: '<1min', rat: '16:9',
+  story: '', style: '', script: '',
+  shots: [], keyframes: [], motionPrompts: []
 };
 
 /* ── Option picker ──────────────────────────────── */
@@ -701,23 +734,17 @@ function unlock(n) {
   document.getElementById('step'+n).classList.remove('locked');
   const st = document.getElementById('st'+n);
   st.textContent = 'ACTIVE'; st.className = 'step-status active';
-  setTimeout(() => {
-    document.getElementById('step'+n).scrollIntoView({behavior:'smooth', block:'start'});
-  }, 120);
+  setTimeout(() => document.getElementById('step'+n).scrollIntoView({behavior:'smooth',block:'start'}), 140);
 }
-
 function complete(n) {
   const st = document.getElementById('st'+n);
   st.textContent = 'COMPLETE'; st.className = 'step-status complete';
 }
-
-function setStatusBar(id, text) {
+function setStatus(id, text) {
   const el = document.getElementById(id);
   el.textContent = text;
   el.classList.toggle('on', !!text);
 }
-
-/* ── Error helpers ──────────────────────────────── */
 function showErr(n, msg) {
   const el = document.getElementById('err'+n);
   el.textContent = '⚠  ' + msg; el.classList.add('on');
@@ -727,12 +754,12 @@ function clearErr(n) {
   el.textContent = ''; el.classList.remove('on');
 }
 
-/* ── Stream helper ──────────────────────────────── */
+/* ── SSE Stream helper ──────────────────────────── */
 async function stream(url, body, onChunk, onDone, onErr) {
   try {
     const res = await fetch(url, {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: {'Content-Type':'application/json'},
       body: JSON.stringify(body)
     });
     if (!res.ok) { onErr && onErr(`HTTP ${res.status}`); return; }
@@ -744,7 +771,7 @@ async function stream(url, body, onChunk, onDone, onErr) {
     while (true) {
       const {done, value} = await reader.read();
       if (done) break;
-      buf += dec.decode(value, {stream: true});
+      buf += dec.decode(value, {stream:true});
       const lines = buf.split('\n');
       buf = lines.pop();
       for (const ln of lines) {
@@ -759,9 +786,7 @@ async function stream(url, body, onChunk, onDone, onErr) {
       }
     }
     onDone && onDone(full);
-  } catch(e) {
-    onErr && onErr(e.message);
-  }
+  } catch(e) { onErr && onErr(e.message); }
 }
 
 /* ── JSON cleaner ───────────────────────────────── */
@@ -773,55 +798,41 @@ function parseJSON(raw) {
 }
 
 /* ══════════════════════════════════════════════════
-   STEP 1 → GENERATE SCRIPT
+   STEP 1 → SCRIPT
 ══════════════════════════════════════════════════ */
 function doGenScript(revision = null) {
   const story = document.getElementById('inp-story').value.trim();
-  if (!story) { alert('请输入核心故事描述'); return; }
-
+  if (!story) { alert('Please enter a story concept.'); return; }
   S.story = story;
   S.style = document.getElementById('inp-style').value.trim() || 'cinematic';
 
   clearErr(1); clearErr(2);
-  complete(1);
-  unlock(2);
+  complete(1); unlock(2);
 
   const disp = document.getElementById('script-display');
   disp.textContent = '';
   disp.classList.add('streaming');
-
   document.getElementById('btn-regen').disabled = true;
   document.getElementById('btn-lock').disabled  = true;
-  setStatusBar('sb2', '— GENERATING —');
-
+  setStatus('sb2','— GENERATING —');
   S.script = '';
 
   stream('/api/generate-script',
-    { story: S.story, duration: S.dur, aspect_ratio: S.rat, style: S.style, revision },
-    (chunk) => {
-      S.script += chunk;
-      disp.textContent = S.script;
-      disp.scrollTop = disp.scrollHeight;
-    },
+    {story:S.story, duration:S.dur, aspect_ratio:S.rat, style:S.style, revision},
+    (chunk) => { S.script += chunk; disp.textContent = S.script; disp.scrollTop = disp.scrollHeight; },
     () => {
       disp.classList.remove('streaming');
       S.script = disp.innerText;
       document.getElementById('btn-regen').disabled = false;
       document.getElementById('btn-lock').disabled  = false;
-      setStatusBar('sb2', '— SCRIPT READY — CLICK TO EDIT —');
+      setStatus('sb2','— SCRIPT READY — CLICK TO EDIT —');
     },
-    (e) => {
-      disp.classList.remove('streaming');
-      setStatusBar('sb2','');
-      showErr(2, e);
-      document.getElementById('btn-regen').disabled = false;
-    }
+    (e) => { disp.classList.remove('streaming'); setStatus('sb2',''); showErr(2, e); document.getElementById('btn-regen').disabled = false; }
   );
 }
 
 function doRegenScript() { doGenScript(); }
 
-/* ── Revision ───────────────────────────────────── */
 function toggleRevision() {
   const w = document.getElementById('rev-wrap');
   w.classList.toggle('open');
@@ -836,28 +847,24 @@ function doApplyRevision() {
   doGenScript(rev);
 }
 
-/* ── Lock script ────────────────────────────────── */
 function doLockScript() {
   S.script = document.getElementById('script-display').innerText.trim();
   if (!S.script) return;
-  complete(2);
-  unlock(3);
+  complete(2); unlock(3);
   _runStoryboard();
 }
 
 /* ══════════════════════════════════════════════════
-   STEP 3 → GENERATE STORYBOARD
+   STEP 3 → STORYBOARD
 ══════════════════════════════════════════════════ */
 function _runStoryboard() {
   clearErr(3);
   document.getElementById('ld3').style.display = 'block';
   document.getElementById('sb-wrap').style.display = 'none';
-  setStatusBar('sb3','');
 
   let raw = '';
-
   stream('/api/generate-storyboard',
-    { story: S.story, duration: S.dur, aspect_ratio: S.rat, style: S.style, script: S.script },
+    {story:S.story, duration:S.dur, aspect_ratio:S.rat, style:S.style, script:S.script},
     (chunk) => { raw += chunk; },
     (full) => {
       document.getElementById('ld3').style.display = 'none';
@@ -866,21 +873,15 @@ function _runStoryboard() {
         renderTable(S.shots);
       } catch(e) {
         document.getElementById('sb-body').innerHTML =
-          `<tr><td colspan="6" style="padding:20px;color:var(--dim)">
-            JSON解析失败，原始输出：<br><br><pre style="white-space:pre-wrap;font-size:11px">${full}</pre>
-          </td></tr>`;
+          `<tr><td colspan="6" style="padding:20px;color:var(--dim)">Parse error — raw output:<br><pre style="white-space:pre-wrap;font-size:11px;margin-top:10px">${full}</pre></td></tr>`;
       }
       document.getElementById('sb-wrap').style.display = 'block';
-      setStatusBar('sb3', `— ${S.shots.length} SHOTS GENERATED —`);
+      setStatus('sb3', `— ${S.shots.length} SHOTS GENERATED —`);
     },
-    (e) => {
-      document.getElementById('ld3').style.display = 'none';
-      showErr(3, e);
-    }
+    (e) => { document.getElementById('ld3').style.display = 'none'; showErr(3, e); }
   );
 }
 
-/* ── Render table ───────────────────────────────── */
 function renderTable(shots) {
   const tbody = document.getElementById('sb-body');
   tbody.innerHTML = '';
@@ -892,28 +893,25 @@ function renderTable(shots) {
       <td contenteditable="true">${s.duration||''}</td>
       <td contenteditable="true">${s.camera_movement||''}</td>
       <td contenteditable="true" class="vis-cell">${s.visual_description||''}</td>
-      <td contenteditable="true" class="dial-cell">${s.dialogue_sfx||'—'}</td>
-    `;
+      <td contenteditable="true" class="dial-cell">${s.dialogue_sfx||'—'}</td>`;
     tbody.appendChild(tr);
   });
 }
 
-/* ── Read table back ────────────────────────────── */
 function readTable() {
-  return Array.from(document.querySelectorAll('#sb-body tr')).map((tr, i) => {
+  return Array.from(document.querySelectorAll('#sb-body tr')).map((tr,i) => {
     const tds = tr.querySelectorAll('td');
     return {
       shot_number: i+1,
-      shot_type:          tds[1]?.innerText.trim() || '',
-      duration:           tds[2]?.innerText.trim() || '',
-      camera_movement:    tds[3]?.innerText.trim() || '',
-      visual_description: tds[4]?.innerText.trim() || '',
-      dialogue_sfx:       tds[5]?.innerText.trim() || ''
+      shot_type:          tds[1]?.innerText.trim()||'',
+      duration:           tds[2]?.innerText.trim()||'',
+      camera_movement:    tds[3]?.innerText.trim()||'',
+      visual_description: tds[4]?.innerText.trim()||'',
+      dialogue_sfx:       tds[5]?.innerText.trim()||''
     };
   });
 }
 
-/* ── Optimize shots ─────────────────────────────── */
 function doOptimize() {
   S.shots = readTable();
   clearErr(3);
@@ -922,60 +920,87 @@ function doOptimize() {
 
   let raw = '';
   stream('/api/optimize-shots',
-    { shots_json: JSON.stringify(S.shots, null, 2), style: S.style, duration: S.dur, aspect_ratio: S.rat },
+    {shots_json:JSON.stringify(S.shots,null,2), style:S.style, duration:S.dur, aspect_ratio:S.rat},
     (chunk) => { raw += chunk; },
     (full) => {
       document.getElementById('ld3').style.display = 'none';
-      try {
-        S.shots = parseJSON(full);
-        renderTable(S.shots);
-      } catch(e) {}
+      try { S.shots = parseJSON(full); renderTable(S.shots); } catch(e){}
       document.getElementById('sb-wrap').style.display = 'block';
-      setStatusBar('sb3', '— SHOTS OPTIMIZED —');
+      setStatus('sb3','— SHOTS OPTIMIZED —');
     },
     (e) => { document.getElementById('ld3').style.display = 'none'; showErr(3, e); }
   );
 }
 
-/* ══════════════════════════════════════════════════
-   STEP 4 → GENERATE PROMPTS
-══════════════════════════════════════════════════ */
-function doGenPrompts() {
+/* ── Keyframe Prompts ───────────────────────────── */
+function doGenKeyframes() {
   S.shots = readTable();
   if (!S.shots.length) return;
 
-  clearErr(4);
-  complete(3);
-  unlock(4);
-
-  document.getElementById('ld4').style.display = 'block';
-  document.getElementById('pm-wrap').style.display = 'none';
-  setStatusBar('sb4','');
+  clearErr(3);
+  document.getElementById('kf-section').style.display = 'block';
+  document.getElementById('ld-kf').style.display = 'block';
+  document.getElementById('kf-grid').innerHTML = '';
+  document.getElementById('btn-kf').disabled = true;
 
   let raw = '';
-  stream('/api/generate-prompts',
-    { storyboard_json: JSON.stringify(S.shots, null, 2), style: S.style, aspect_ratio: S.rat },
+  stream('/api/generate-keyframes',
+    {storyboard_json:JSON.stringify(S.shots,null,2), style:S.style, aspect_ratio:S.rat},
+    (chunk) => { raw += chunk; },
+    (full) => {
+      document.getElementById('ld-kf').style.display = 'none';
+      try {
+        S.keyframes = parseJSON(full);
+        renderPromptGrid('kf-grid', S.keyframes, 'kf');
+      } catch(e) {
+        document.getElementById('kf-grid').innerHTML =
+          `<div style="padding:20px;color:var(--dim)">Parse error:<br><pre style="white-space:pre-wrap;font-size:11px">${full}</pre></div>`;
+      }
+      setStatus('sb-kf', `— ${S.keyframes.length} KEYFRAME PROMPTS READY —`);
+      document.getElementById('btn-kf').disabled = false;
+      document.getElementById('btn-motion-go').style.display = '';
+    },
+    (e) => {
+      document.getElementById('ld-kf').style.display = 'none';
+      document.getElementById('btn-kf').disabled = false;
+      showErr(3, e);
+    }
+  );
+}
+
+/* ── Go to Motion ───────────────────────────────── */
+function doGoMotion() {
+  S.shots = readTable();
+  clearErr(4);
+  complete(3); unlock(4);
+
+  document.getElementById('ld4').style.display = 'block';
+  document.getElementById('mt-wrap').style.display = 'none';
+
+  let raw = '';
+  stream('/api/generate-motion',
+    {storyboard_json:JSON.stringify(S.shots,null,2), style:S.style, aspect_ratio:S.rat, duration:S.dur},
     (chunk) => { raw += chunk; },
     (full) => {
       document.getElementById('ld4').style.display = 'none';
       try {
-        S.prompts = parseJSON(full);
-        renderPrompts(S.prompts);
+        S.motionPrompts = parseJSON(full);
+        renderPromptGrid('mt-grid', S.motionPrompts, 'mt');
       } catch(e) {
-        document.getElementById('pm-grid').innerHTML =
-          `<div style="padding:20px;color:var(--dim)">JSON解析失败：<br><pre style="white-space:pre-wrap;font-size:11px">${full}</pre></div>`;
+        document.getElementById('mt-grid').innerHTML =
+          `<div style="padding:20px;color:var(--dim)">Parse error:<br><pre style="white-space:pre-wrap;font-size:11px">${full}</pre></div>`;
       }
-      document.getElementById('pm-wrap').style.display = 'block';
-      setStatusBar('sb4', `— ${S.prompts.length} PROMPTS READY —`);
+      document.getElementById('mt-wrap').style.display = 'block';
+      setStatus('sb4', `— ${S.motionPrompts.length} MOTION PROMPTS READY —`);
       complete(4);
     },
     (e) => { document.getElementById('ld4').style.display = 'none'; showErr(4, e); }
   );
 }
 
-/* ── Render prompts ─────────────────────────────── */
-function renderPrompts(prompts) {
-  const grid = document.getElementById('pm-grid');
+/* ── Prompt grid renderer ───────────────────────── */
+function renderPromptGrid(gridId, prompts, prefix) {
+  const grid = document.getElementById(gridId);
   grid.innerHTML = '';
   prompts.forEach((p, i) => {
     const card = document.createElement('div');
@@ -983,22 +1008,22 @@ function renderPrompts(prompts) {
     card.innerHTML = `
       <div class="p-num">SHOT ${String(p.shot_number||i+1).padStart(2,'0')}</div>
       <div class="p-text">${p.prompt||''}</div>
-      <button class="copy-btn" onclick="doCopy(${i})">COPY</button>
-    `;
+      <button class="copy-btn" onclick="doCopySingle('${prefix}',${i})">COPY</button>`;
     grid.appendChild(card);
   });
 }
 
-/* ── Copy ───────────────────────────────────────── */
-async function doCopy(i) {
-  await navigator.clipboard.writeText(S.prompts[i]?.prompt||'');
-  const btn = document.querySelectorAll('.copy-btn')[i];
-  btn.textContent = 'COPIED'; btn.classList.add('done');
-  setTimeout(() => { btn.textContent = 'COPY'; btn.classList.remove('done'); }, 1400);
+/* ── Copy helpers ───────────────────────────────── */
+async function doCopySingle(prefix, i) {
+  const arr = prefix === 'kf' ? S.keyframes : S.motionPrompts;
+  await navigator.clipboard.writeText(arr[i]?.prompt||'');
+  const btns = document.querySelectorAll(`#${prefix}-grid .copy-btn`);
+  btns[i].textContent = 'COPIED'; btns[i].classList.add('done');
+  setTimeout(() => { btns[i].textContent = 'COPY'; btns[i].classList.remove('done'); }, 1400);
 }
 
-async function doCopyAll() {
-  const txt = S.prompts.map((p,i) =>
+async function doCopyAllMotion() {
+  const txt = S.motionPrompts.map((p,i) =>
     `SHOT ${String(p.shot_number||i+1).padStart(2,'0')}:\n${p.prompt}`
   ).join('\n\n---\n\n');
   await navigator.clipboard.writeText(txt);
@@ -1007,8 +1032,54 @@ async function doCopyAll() {
 /* ── PDF export ─────────────────────────────────── */
 function doPDF() { window.print(); }
 
-/* ── New project ────────────────────────────────── */
+/* ══════════════════════════════════════════════════
+   PROJECT SAVE / NEW PROJECT
+══════════════════════════════════════════════════ */
+function generateProjectId() {
+  const existing = JSON.parse(localStorage.getItem('8s_projects') || '[]');
+  const n = existing.length + 1;
+  return '8S-' + String(n).padStart(3,'0');
+}
+
+function saveProject() {
+  const projects = JSON.parse(localStorage.getItem('8s_projects') || '[]');
+  const id = generateProjectId();
+  const project = {
+    id,
+    date: new Date().toISOString(),
+    story:   S.story,
+    style:   S.style,
+    duration: S.dur,
+    aspect_ratio: S.rat,
+    script:  S.script,
+    shots:   readTable(),
+    keyframes:     S.keyframes,
+    motionPrompts: S.motionPrompts
+  };
+  projects.push(project);
+  localStorage.setItem('8s_projects', JSON.stringify(projects));
+  return id;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('save-toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+
 function doNewProject() {
+  // Save current project if it has content
+  if (S.story || S.script) {
+    const id = saveProject();
+    showToast(`PROJECT ${id} SAVED`);
+    setTimeout(_resetUI, 800);
+  } else {
+    _resetUI();
+  }
+}
+
+function _resetUI() {
   [2,3,4].forEach(n => {
     document.getElementById('step'+n).classList.add('locked');
     const st = document.getElementById('st'+n);
@@ -1018,22 +1089,37 @@ function doNewProject() {
   st1.textContent = 'ACTIVE'; st1.className = 'step-status active';
 
   document.getElementById('script-display').textContent = '';
+  document.getElementById('inp-story').value = '';
+  document.getElementById('inp-style').value = '';
   document.getElementById('sb-body').innerHTML = '';
-  document.getElementById('pm-grid').innerHTML = '';
+  document.getElementById('kf-grid').innerHTML = '';
+  document.getElementById('mt-grid').innerHTML = '';
+  document.getElementById('kf-section').style.display = 'none';
+  document.getElementById('sb-wrap').style.display = 'none';
+  document.getElementById('mt-wrap').style.display = 'none';
+  document.getElementById('btn-motion-go').style.display = 'none';
   document.getElementById('rev-input').value = '';
   document.getElementById('rev-wrap').classList.remove('open');
-  ['sb2','sb3','sb4'].forEach(id => setStatusBar(id,''));
-  [1,2,3,4].forEach(n => clearErr(n));
   document.getElementById('btn-regen').disabled = true;
   document.getElementById('btn-lock').disabled  = true;
+  ['sb2','sb3','sb4','sb-kf'].forEach(id => setStatus(id,''));
+  [1,2,3,4].forEach(n => clearErr(n));
 
-  S.script = ''; S.shots = []; S.prompts = [];
+  S.story=''; S.style=''; S.script=''; S.shots=[]; S.keyframes=[]; S.motionPrompts=[];
+
+  // reset duration/ratio selections to defaults
+  document.querySelectorAll('#dur-grp .opt-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelector('#dur-grp .opt-btn[data-v="<1min"]').classList.add('selected');
+  document.querySelectorAll('#rat-grp .opt-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelector('#rat-grp .opt-btn[data-v="16:9"]').classList.add('selected');
+  S.dur = '<1min'; S.rat = '16:9';
+
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
 /* ── Clock ──────────────────────────────────────── */
 function tick() {
-  const t = new Date().toLocaleString('zh-CN',{hour12:false});
+  const t = new Date().toLocaleString('en-GB',{hour12:false,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
   document.getElementById('hdr-time').textContent = t;
   document.getElementById('ft-time').textContent  = t;
 }
